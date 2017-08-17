@@ -10,6 +10,9 @@
  		<meta name="MobileOptimized" content="320" />
  		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
  		<link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" href="colorify.css">
+
+    <link href="https://fonts.googleapis.com/css?family=Amatica+SC|Barrio|Bungee+Shade|Comfortaa|Elsie|Faster+One|Flamenco|Monoton|Righteous|Snowburst+One" rel="stylesheet">
  	</head>
  	<body>
     <header>
@@ -17,18 +20,19 @@
       <span>Now Playing.....placeholder for audio</span>
       <form>
            <label for="search_field"></label>
-           <input type="search" name="q" id="search_field" placeholder="Who is your favorite artist?" autocomplete="on" size="30">
+           <input type="text" name="q" id="search_field" placeholder="Who is your favorite artist?" autocomplete="on" size="30">
            <button type="button" id="search_now">Search!</button>
       </form>
-      <div>
+      </header>
+      <section>
         <h2>Search Results</h2>
         <div id="results_container">
 
         </div>
 
-      </div>
-    </header>
+      </section>
 
+  <script src="colorify.min.js"></script>
  	<script type="text/javascript" src="main.js"></script>
  	</body>
  </html>

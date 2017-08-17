@@ -37,15 +37,17 @@ function fetchGET() {
         let markup = "";
         let abrv = data.results;
 
+
         for (let i=0; i<data.results.length; i++){
           let cover_art = abrv[i].artworkUrl100
           let artist = abrv[i].artistName
           let album = abrv[i].collectionName
           let audio = abrv[i].previewUrl
           let song_title = abrv[i].trackName
+          let genre = abrv[i].primaryGenreName
 
           let song_result_hits = `
-          <div class="item">
+          <div colorify-dynamic class="item" "${genre}">
             <img src="${cover_art}"/>
             <h4>${song_title}</h4>
             <h3>${artist}</h3>
