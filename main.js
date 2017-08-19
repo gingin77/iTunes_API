@@ -2,7 +2,7 @@ let searchInputEl = document.getElementById("search_field");
 let buttonEl = document.getElementById("search_now");
 
 let url = "";
-let x = "";
+let songsToPlay = [];
 
 let results_container = document.getElementById("results_container");
 // let resultsArray = [];
@@ -68,13 +68,20 @@ function fetchGET() {
 }
 
 function playSongSnip(){
+  console.log("A song has been selected");
   let eventTarget=event.target;
   console.log(eventTarget);
-  let eventTargetArribute=eventTarget.getAttribute("url");
-  console.log(eventTargetArribute);
-  console.log("A song has been selected");
-  let audioSource = getElementById('song_player');
-  console.log(audioSource);
+  let urlForSelectedSong=eventTarget.getAttribute("url");/* << url for the song we want to play*/
+  console.log(urlForSelectedSong);
+  songsToPlay.push(urlForSelectedSong);
+  console.log(songsToPlay);
+
+  let audioPlayerEl = document.getElementById('song_player');
+  console.log(audioPlayerEl);
+  audioPlayerEl.setAttribute("src", "urlForSelectedSong");
+  console.log(audioPlayerEl);
+  // let currentSongPlaying = audioPlayerEl.getAttribute('src');
+  // console.log(currentSongPlaying);
 }
 
 

@@ -18,29 +18,18 @@
     <header>
       <h1>Find Your Favorite Tunes</h1>
       <span>Now Playing.....placeholder for audio</span>
-      <!-- <audio controls preload="none" style="width:480px;">
-             <source src="https://audio-ssl.itunes.apple.com/apple-assets-us-std-000001/AudioPreview20/v4/15/86/39/1586396e-a6fb-8cba-57a7-aeae5a4e4a44/mzaf_1550398466213326000.plus.aac.p.m4a"  type="audio/mp4" id="song_player">
-          </audio> -->
-    <!-- alternative... make buttons using code from stackoverflow Actually, my first priority is to simplfiy my code, so ignore the button customization right now.-->
-
-    <audio src="https://audio-ssl.itunes.apple.com/apple-assets-us-std-000001/AudioPreview20/v4/15/86/39/1586396e-a6fb-8cba-57a7-aeae5a4e4a44/mzaf_1550398466213326000.plus.aac.p.m4a" controls preload="none" style="width:480px;"></audio>
-
-
-
-    <form>
+      <audio src="https://audio-ssl.itunes.apple.com/apple-assets-us-std-000001/AudioPreview20/v4/15/86/39/1586396e-a6fb-8cba-57a7-aeae5a4e4a44/mzaf_1550398466213326000.plus.aac.p.m4a" controls preload="none" style="width:480px" id="song_player"></audio>
+        <form>
            <label for="search_field"></label>
            <input type="text" name="q" id="search_field" placeholder="Who is your favorite artist?" autocomplete="on" size="30">
            <button type="button" id="search_now">Search!</button>
-      </form>
+        </form>
       </header>
       <section>
-        <h2>Search Results</h2>
-        <div id="results_container">
-
-        </div>
-
+          <h2>Search Results</h2>
+          <div id="results_container">
+          </div>
       </section>
-
   <script src="colorify.min.js"></script>
  	<script type="text/javascript" src="main.js"></script>
  	</body>
