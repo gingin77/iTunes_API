@@ -78,8 +78,17 @@ function playSongSnip(){
 
   let audioPlayerEl = document.getElementById('song_player');
   console.log(audioPlayerEl);
-  audioPlayerEl.setAttribute("src", "urlForSelectedSong");
+
+  audioPlayerEl.src=songsToPlay[0];
   console.log(audioPlayerEl);
+
+  // Existing URL:
+  // <audio src="https://audio-ssl.itunes.apple.com/apple-assets-us-std-000001/AudioPreview20/v4/15/86/39/1586396e-a6fb-8cba-57a7-aeae5a4e4a44/mzaf_1550398466213326000.plus.aac.p.m4a" controls="" preload="none" style="width:480px" id="song_player"></audio>
+
+
+  // using setAttribute doesn't seeem to work as a way of passing the url...
+  // audioPlayerEl.setAttribute("src", "urlForSelectedSong");
+  // console.log(audioPlayerEl);
   // let currentSongPlaying = audioPlayerEl.getAttribute('src');
   // console.log(currentSongPlaying);
 }
