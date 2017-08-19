@@ -7,8 +7,6 @@ let x = "";
 let results_container = document.getElementById("results_container");
 // let resultsArray = [];
 
-
-
 buttonEl.addEventListener('click', function(e) {
   let search_termVal = searchInputEl.value;
 
@@ -21,8 +19,6 @@ buttonEl.addEventListener('click', function(e) {
   console.log(url);
   fetchGET(url);
 });
-
-
 
 function fetchGET() {
   fetch(url)
@@ -37,7 +33,6 @@ function fetchGET() {
 
         let markup = "";
         let abrv = data.results;
-
 
         for (let i=0; i<data.results.length; i++){
           let cover_art = abrv[i].artworkUrl100
@@ -55,40 +50,16 @@ function fetchGET() {
           </div>`
 
           markup += song_result_hits
-
-          // resultsArray.push({
-          //   cover_art: abrv[i].artworkUrl100,
-          //   artist: abrv[i].artistName,
-          //   album: abrv[i].collectionName,
-          //   audio: abrv[i].previewUrl,
-          //   song: abrv[i].trackName
-          // }); /* end of object*/
-        } /* end of for loop*/
-        // console.log(resultsArray);
+        }
 
         console.log(markup);
         results_container.innerHTML = markup;
 
         let item_divs = document.getElementsByClassName("item");
-        // let audio_tags = document.getElementsByClassName("audio");
-
 
         for (let j=0; j<item_divs.length; j++){
             item_divs[j].addEventListener('click', playSongSnip, true);
-            // audio_tags[j].addEventListener('click', playSongSnip, true);
           }
-          // console.log(item_divs);
-          // console.log(item_divs[0].children);/*  [img, h4, h3, audio.audio] */
-          // console.log(item_divs[0].children[3]); /* returns: <audio controls = ...*/
-          //
-          // x = item_divs[0].children[3].currentSrc;
-          // console.log(typeof x); /* returns string*/
-          // console.log(x); /*empty, won't print... could the string be passed, even if it won't console.log????*/
-
-
-
-
-
       })
   })
   .catch(function(err) {
@@ -96,27 +67,14 @@ function fetchGET() {
   })
 }
 
-// let audio = "";
-
-// Element.getAttribute("id")
-
 function playSongSnip(){
   let eventTarget=event.target;
   console.log(eventTarget);
   let eventTargetArribute=eventTarget.getAttribute("url");
   console.log(eventTargetArribute);
-  // let audioSrc = eventTargetClasses[0];
   console.log("A song has been selected");
-  // let thisAudio = this.target;
-  // console.log((typeof thisAudio), thisAudio);
-  // let song_src = thisAudio.div.value;
-  // console.log(audioSrc);
-  // thisAudio.play();
-
-  // let x = event.bubbles;
-  // document.getElementsByClassName("audio") = x;
-  // I need the scr value for the audio tag within that item div that was clicked... how??
-  // audio.play();
+  let audioSource = getElementById('song_player');
+  console.log(audioSource);
 }
 
 
