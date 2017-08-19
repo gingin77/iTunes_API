@@ -4,6 +4,8 @@ let buttonEl = document.getElementById("search_now");
 let url = "";
 let songsToPlay = [];
 
+
+
 let results_container = document.getElementById("results_container");
 // let resultsArray = [];
 
@@ -43,7 +45,7 @@ function fetchGET() {
           let genre = abrv[i].primaryGenreName
 
           let song_result_hits = `
-          <div class="item" url="${audio}">
+          <div class="item" url="${audio}" value="Artist: ${artist} Song Title: ${song_title}">
             <img src="${cover_art}" url="${audio}"/>
             <h4 url="${audio}">${song_title}</h4>
             <h3 url="${audio}">${artist}</h3>
@@ -58,7 +60,7 @@ function fetchGET() {
         let item_divs = document.getElementsByClassName("item");
 
         for (let j=0; j<item_divs.length; j++){
-            item_divs[j].addEventListener('click', playSongSnip, true);
+            item_divs[j].addEventListener('click', moveSelSongURLToPlayer, true);
           }
       })
   })
@@ -67,31 +69,47 @@ function fetchGET() {
   })
 }
 
-function playSongSnip(){
+function moveSelSongURLToPlayer(){ /*hmm I'm thinking I need to split up the play functionality from the move to player function...*/
   console.log("A song has been selected");
   let eventTarget=event.target;
-  console.log(eventTarget);
+
   let urlForSelectedSong=eventTarget.getAttribute("url");/* << url for the song we want to play*/
-  console.log(urlForSelectedSong);
   songsToPlay.push(urlForSelectedSong);
   console.log(songsToPlay);
 
-  let audioPlayerEl = document.getElementById('song_player');
-  console.log(audioPlayerEl);
-
-  audioPlayerEl.src=songsToPlay[0];
-  console.log(audioPlayerEl);
-
-  // Existing URL:
-  // <audio src="https://audio-ssl.itunes.apple.com/apple-assets-us-std-000001/AudioPreview20/v4/15/86/39/1586396e-a6fb-8cba-57a7-aeae5a4e4a44/mzaf_1550398466213326000.plus.aac.p.m4a" controls="" preload="none" style="width:480px" id="song_player"></audio>
 
 
-  // using setAttribute doesn't seeem to work as a way of passing the url...
-  // audioPlayerEl.setAttribute("src", "urlForSelectedSong");
-  // console.log(audioPlayerEl);
-  // let currentSongPlaying = audioPlayerEl.getAttribute('src');
-  // console.log(currentSongPlaying);
+  // let songInfo=eventTarget.getAttribute("value");
+  // console.log(songInfo);
+
+  decideToPlayOrStoreSong(songsToPlay)
+
+  // still need to hit ply though...
+  // Also, it would be nice to show the song title, as well as a list of other selected songs
 }
+
+function decideToPlayOrStoreSong(){
+  let mostRecentSongPosition = (songsToPlay.length - 1);
+  console.log(mostRecentSongPosition);
+  audioPlayerEl = document.getElementById('song_player');
+
+  if (songsToPlay.length === 1){
+    audioPlayerEl.src=songsToPlay[0];
+    audioPlayerEl.play();
+  }
+  else {
+    audioPlayerEl.src=songsToPlay[mostRecentSongPosition];
+    audioPlayerEl.play();
+  }
+}
+
+
+
+//
+// document.getElementById('player').play()"
+// document.getElementById('player').pause()"
+// document.getElementById('player').volume += 0.1
+// document.getElementById('player').volume -= 0.1
 
 
 // <audio controls="controls">
@@ -125,7 +143,7 @@ function playSongSnip(){
 //
 // <p>Click the button to find out if the onclick event is a bubbling event.</p>
 //
-// <button onclick="myFunction(event)">Try it</button>
+// myFunction(event)">Try it</button>
 //
 // <p id="demo"></p>
 //
@@ -147,3 +165,22 @@ function playSongSnip(){
 // artworkUrl100 "http://is5.mzstatic.com/image/thumb/Music69/v4/32/44/08/324408b9-c9ad-e8c1-17ec-132b15dada48/source/100x100bb.jpg"
 
 // use to modify the input styles: https://www.w3schools.com/jsref/event_onfocusout.asp
+
+
+//
+// Original code with console.log notes....
+// function moveSelSongToPlayer(){
+//   console.log("A song has been selected");
+//   let eventTarget=event.target;
+//   console.log(eventTarget);
+//   let urlForSelectedSong=eventTarget.getAttribute("url");/* << url for the song we want to play*/
+//   console.log(urlForSelectedSong);
+//   songsToPlay.push(urlForSelectedSong);
+//   console.log(songsToPlay);
+//
+//   let audioPlayerEl = document.getElementById('song_player');
+//   console.log(audioPlayerEl);
+//
+//   audioPlayerEl.src=songsToPlay[0];
+//   console.log(audioPlayerEl);
+// }
