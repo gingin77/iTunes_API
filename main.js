@@ -2,6 +2,7 @@ let searchInputEl = document.getElementById("search_field");
 let buttonEl = document.getElementById("search_now");
 
 let url = "";
+let x = "";
 
 let results_container = document.getElementById("results_container");
 // let resultsArray = [];
@@ -47,13 +48,10 @@ function fetchGET() {
           let genre = abrv[i].primaryGenreName
 
           let song_result_hits = `
-          <div class="item" "${audio}">
-            <img src="${cover_art}"/>
-            <h4>${song_title}</h4>
-            <h3>${artist}</h3>
-            <audio controls="controls">
-                <source src=${audio} type="audio/mp4">
-            </audio>
+          <div class="item" url="${audio}">
+            <img src="${cover_art}" url="${audio}"/>
+            <h4 url="${audio}">${song_title}</h4>
+            <h3 url="${audio}">${artist}</h3>
           </div>`
 
           markup += song_result_hits
@@ -76,25 +74,20 @@ function fetchGET() {
 
 
         for (let j=0; j<item_divs.length; j++){
-            item_divs[j].addEventListener('click', playSongSnip, false);
+            item_divs[j].addEventListener('click', playSongSnip, true);
             // audio_tags[j].addEventListener('click', playSongSnip, true);
           }
-          console.log(item_divs);
-          console.log(item_divs[0].children);/*  [img, h4, h3, audio.audio] */
-          console.log(item_divs[0].children[3]); /* returns: <audio controls = ...*/
-
-          let x = item_divs[0].children[3].currentSrc;
-          console.log(typeof x);
-          console.log(x);
-
-          // var x = document.getElementById("myAudio").currentSrc;
+          // console.log(item_divs);
+          // console.log(item_divs[0].children);/*  [img, h4, h3, audio.audio] */
+          // console.log(item_divs[0].children[3]); /* returns: <audio controls = ...*/
+          //
+          // x = item_divs[0].children[3].currentSrc;
+          // console.log(typeof x); /* returns string*/
+          // console.log(x); /*empty, won't print... could the string be passed, even if it won't console.log????*/
 
 
-        // let numberKeys = document.getElementsByClassName("number");
 
-// for (let i=0; i<numberKeys.length; i++){
-//     numberKeys[i].addEventListener('click', numberKeyEvListener);
-//   }
+
 
       })
   })
@@ -105,15 +98,19 @@ function fetchGET() {
 
 // let audio = "";
 
+// Element.getAttribute("id")
+
 function playSongSnip(){
-  let eventTargetClasses=event.target.classList;
-  console.log(eventTargetClasses);
-  let audioSrc = eventTargetClasses[1];
+  let eventTarget=event.target;
+  console.log(eventTarget);
+  let eventTargetArribute=eventTarget.getAttribute("url");
+  console.log(eventTargetArribute);
+  // let audioSrc = eventTargetClasses[0];
   console.log("A song has been selected");
   // let thisAudio = this.target;
   // console.log((typeof thisAudio), thisAudio);
   // let song_src = thisAudio.div.value;
-  console.log(audioSrc);
+  // console.log(audioSrc);
   // thisAudio.play();
 
   // let x = event.bubbles;
@@ -121,6 +118,21 @@ function playSongSnip(){
   // I need the scr value for the audio tag within that item div that was clicked... how??
   // audio.play();
 }
+
+
+// <audio controls="controls">
+//     <source src=${audio} type="audio/mp4">
+// </audio>
+
+
+// let aud = new Audio();
+// aud.src = x;
+// aud.play()
+// http://www.binarytides.com/using-html5-audio-element-javascript/
+//
+// index.html:1 Uncaught (in promise) DOMException: Failed to load because no supported source was found.
+// Promise (async)
+// (anonymous) @ main.js:123
 
 // var aud = new Audio();
 // aud.src = 'sound.ogg';
