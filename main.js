@@ -3,6 +3,7 @@ let buttonEl = document.getElementById("search_now");
 
 let url = "";
 let songsToPlay = [];
+let pickedSongs = [];
 
 
 
@@ -46,9 +47,9 @@ function fetchGET() {
 
           let song_result_hits = `
           <div class="item" url="${audio}" value="Artist: ${artist} Song Title: ${song_title}">
-            <img src="${cover_art}" url="${audio}"/>
-            <h4 url="${audio}">${song_title}</h4>
-            <h3 url="${audio}">${artist}</h3>
+            <img src="${cover_art}" url="${audio}" value="Artist: ${artist} Song Title: ${song_title}"/>
+            <h4 url="${audio}" value="Artist: ${artist} Song Title: ${song_title}">${song_title}</h4>
+            <h3 url="${audio}" value="Artist: ${artist} Song Title: ${song_title}">${artist}</h3>
           </div>`
 
           markup += song_result_hits
@@ -72,17 +73,22 @@ function fetchGET() {
 function moveSelSongURLToPlayer(){ /*hmm I'm thinking I need to split up the play functionality from the move to player function...*/
   console.log("A song has been selected");
   let eventTarget=event.target;
+  console.log(eventTarget);
 
   let urlForSelectedSong=eventTarget.getAttribute("url");/* << url for the song we want to play*/
   songsToPlay.push(urlForSelectedSong);
-  console.log(songsToPlay);
+  // console.log(songsToPlay);
 
 
 
-  // let songInfo=eventTarget.getAttribute("value");
-  // console.log(songInfo);
+  let songInfo=eventTarget.getAttribute("value");
+  console.log(songInfo);
+  pickedSongs = [];
+  pickedSongs.push(songInfo);
+  console.log(pickedSongs);
 
-  decideToPlayOrStoreSong(songsToPlay)
+  decideToPlayOrStoreSong(songsToPlay);
+  storeStongs(pickedSongs);
 
   // still need to hit ply though...
   // Also, it would be nice to show the song title, as well as a list of other selected songs
@@ -101,6 +107,17 @@ function decideToPlayOrStoreSong(){
     audioPlayerEl.src=songsToPlay[mostRecentSongPosition];
     audioPlayerEl.play();
   }
+}
+
+function storeStongs(){
+  let currentstring = pickedSongs[0];
+  console.log(currentstring)
+  let songListEl = document.getElementById('songsToPlay');
+  console.log(songListEl);
+  let newListItemEl = document.createElement( "li" );
+  let listItemContent = document.createTextNode(pickedSongs[0]);
+  songListEl.appendChild( newListItemEl );
+  newListItemEl.appendChild( listItemContent );
 }
 
 

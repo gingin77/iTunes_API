@@ -30,6 +30,10 @@ h2, span {
   font-weight: 900;
 }
 
+ul{
+  font-family: 'Comfortaa', cursive;
+}
+
 h4, h3{
   margin: 0em;
 }
