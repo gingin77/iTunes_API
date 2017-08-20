@@ -2,10 +2,10 @@ let searchInputEl = document.getElementById("search_field");
 let buttonEl = document.getElementById("search_now");
 
 let url = "";
-let songsToPlay = [];
-let pickedSongs = [];
-
-
+let currentSongURLPlaying = [];
+let currentSongPlaying = [];
+let songURLsToPlay = [];
+let listOfPickedSongs = [];
 
 let results_container = document.getElementById("results_container");
 // let resultsArray = [];
@@ -46,16 +46,15 @@ function fetchGET() {
           let genre = abrv[i].primaryGenreName
 
           let song_result_hits = `
-          <div class="item" url="${audio}" value="Artist: ${artist} Song Title: ${song_title}">
-            <img src="${cover_art}" url="${audio}" value="Artist: ${artist} Song Title: ${song_title}"/>
-            <h4 url="${audio}" value="Artist: ${artist} Song Title: ${song_title}">${song_title}</h4>
-            <h3 url="${audio}" value="Artist: ${artist} Song Title: ${song_title}">${artist}</h3>
+          <div class="item" url="${audio}" value='${artist}, "${song_title}"'>
+            <img src="${cover_art}" url="${audio}" value='${artist}, "${song_title}"'/>
+            <h4 url="${audio}" value='${artist}, "${song_title}"'>${song_title}</h4>
+            <h3 url="${audio}" value='${artist}, "${song_title}"'>${artist}</h3>
           </div>`
 
           markup += song_result_hits
         }
-
-        console.log(markup);
+        // console.log(markup);
         results_container.innerHTML = markup;
 
         let item_divs = document.getElementsByClassName("item");
@@ -76,50 +75,123 @@ function moveSelSongURLToPlayer(){ /*hmm I'm thinking I need to split up the pla
   console.log(eventTarget);
 
   let urlForSelectedSong=eventTarget.getAttribute("url");/* << url for the song we want to play*/
-  songsToPlay.push(urlForSelectedSong);
-  // console.log(songsToPlay);
-
-
+  songURLsToPlay.push(urlForSelectedSong);/*pass to subsequent functions*/
+  console.log(songURLsToPlay.length);
 
   let songInfo=eventTarget.getAttribute("value");
   console.log(songInfo);
-  pickedSongs = [];
-  pickedSongs.push(songInfo);
-  console.log(pickedSongs);
+  listOfPickedSongs.push(songInfo);
+  console.log((listOfPickedSongs.length), (listOfPickedSongs));
 
-  decideToPlayOrStoreSong(songsToPlay);
-  storeStongs(pickedSongs);
-
-  // still need to hit ply though...
-  // Also, it would be nice to show the song title, as well as a list of other selected songs
+  holdAndPlayOrHold(songURLsToPlay, listOfPickedSongs);
 }
+// If first song selected, then play song and disply title.
+// If 2nd song selected, dispaly song and wait for 1st song to end. Can I get this to work?
+// still need to hit ply though...
+// Also, it would be nice to show the song title, as well as a list of other selected songs
 
-function decideToPlayOrStoreSong(){
-  let mostRecentSongPosition = (songsToPlay.length - 1);
-  console.log(mostRecentSongPosition);
+function holdAndPlayOrHold(){ /*this function triggers the first picked song to play AND coordinates storage of Songs*/
   audioPlayerEl = document.getElementById('song_player');
 
-  if (songsToPlay.length === 1){
-    audioPlayerEl.src=songsToPlay[0];
-    audioPlayerEl.play();
+  if (songURLsToPlay.length === 1){
+
+    audioPlayerEl.src = songURLsToPlay[0];
+    audioPlayerEl.play(); /* <<< Song is played here */
+
+    currentSongURLPlaying.push(songURLsToPlay);
+    currentSongPlaying.push(listOfPickedSongs);/* <<< Push song URL and info to respective apt CurrentSong arrays is played here */
+
+    console.log("The song currently playing is "+ currentSongPlaying[0]);
   }
-  else {
-    audioPlayerEl.src=songsToPlay[mostRecentSongPosition];
-    audioPlayerEl.play();
+  else if (songURLsToPlay.length > 1) {
+    storeSongs(songURLsToPlay, listOfPickedSongs);
+    console.log("another song was picked")
   }
 }
 
-function storeStongs(){
-  let currentstring = pickedSongs[0];
-  console.log(currentstring)
-  let songListEl = document.getElementById('songsToPlay');
-  console.log(songListEl);
-  let newListItemEl = document.createElement( "li" );
-  let listItemContent = document.createTextNode(pickedSongs[0]);
-  songListEl.appendChild( newListItemEl );
-  newListItemEl.appendChild( listItemContent );
+function nextSongQ(){ /*this is where I need to figure out how to set up the sequence....*/
+  console.log("a song has ended!");
+  if (listOfPickedSongs.length === 1){
+    console.log("There are no new song snippets to play");
+  } else if (listOfPickedSongs.length >= 2) {
+    audioPlayerEl.src = songURLsToPlay[1];
+    setTimeout (function(){
+    audioPlayerEl.play();
+    }, 2000);
+  } else if (listOfPickedSongs.length === 3) {
+    audioPlayerEl.src = songURLsToPlay[3];
+    setTimeout (function(){
+    audioPlayerEl.play();
+    }, 2000);
+  }
 }
 
+let lastSongPlayed = currentSongURLPlaying.shift;
+
+function storeSongs(){/*when writing this function, imagine a 2nd song being picekd. listOfPickedSongs.length and songURLsToPlay.length will both now be 2; listOfPickedSongs holds the song info; songURLsToPlay holds the url. I don't need to know mostRecentSongPosition to store the song; I need to know the eventTarget */
+console.log("song is in que")
+
+  // if (songURLsToPlay.length === 2 && audioPlayerEl.currentTime === 0){
+  //     audioPlayerEl.src=songURLsToPlay[1];
+  //     audioPlayerEl.play();
+  //   } else if ((songURLsToPlay.length === 2 && audioPlayerEl.currentTime !== 0)) {
+  //     console.log("song is in que")
+  //   }
+  //
+  // if (songURLsToPlay.length === 3 && audioPlayerEl.currentTime === 0){
+  //     audioPlayerEl.src=songURLsToPlay[2];
+  //     audioPlayerEl.play();
+  //   } else if ((songURLsToPlay.length === 2 && audioPlayerEl.currentTime !== 0)) {
+  //     console.log("song is in que")
+  //   }
+}
+    // audioPlayerEl.src=songURLsToPlay[0];
+    // audioPlayerEl.nextSongQ(songURLsToPlay, listOfPickedSongs);
+
+
+  // else if (songURLsToPlay.length > 1) {
+  //   storeSongs(songURLsToPlay, listOfPickedSongs);
+  //   console.log("another song was picked")
+  // }
+
+//   let mostRecentSongPosition = (songURLsToPlay.length - 1);
+//   console.log(mostRecentSongPosition);
+//
+  // let currentstring = listOfPickedSongs[mostRecentSongPosition];
+  // console.log(currentstring)
+  //
+  // let songListEl = document.getElementById('songURLsToPlay');
+  // // console.log(songListEl);
+  // let newListItemEl = document.createElement( "li" );
+  // let listItemContent = document.createTextNode(listOfPickedSongs[0]);
+  // songListEl.appendChild( newListItemEl );
+  // newListItemEl.appendChild( listItemContent );
+  //
+  // audioPlayerEl.src=songURLsToPlay[mostRecentSongPosition];
+  // audioPlayerEl.play();
+
+
+
+  //   // audioPlayerEl.play(songURLsToPlay[1]);
+  //     // listOfPickedSongs.length = 2;
+  // }
+  // if (listOfPickedSongs.length > 1) {
+  //   let nextSong = audioPlayerEl.src = songURLsToPlay[1];
+  //   currentSongPlaying.push(nextSong);
+  //   audioPlayerEl.play();
+  //   songURLsToPlay.shift;
+  // }
+  // if (listOfPickedSongs.length === 3) {
+  //   audioPlayerEl.src=songURLsToPlay[2];
+  //   audioPlayerEl.play();
+  //
+  // }
+  // if (listOfPickedSongs.length === 4) {
+  //   audioPlayerEl.src=songURLsToPlay[3];
+  //   audioPlayerEl.play();
+  //   songURLsToPlay.shift;
+  //   // songInfo.shift;
+  // }
 
 
 //
@@ -192,12 +264,12 @@ function storeStongs(){
 //   console.log(eventTarget);
 //   let urlForSelectedSong=eventTarget.getAttribute("url");/* << url for the song we want to play*/
 //   console.log(urlForSelectedSong);
-//   songsToPlay.push(urlForSelectedSong);
-//   console.log(songsToPlay);
+//   songURLsToPlay.push(urlForSelectedSong);
+//   console.log(songURLsToPlay);
 //
 //   let audioPlayerEl = document.getElementById('song_player');
 //   console.log(audioPlayerEl);
 //
-//   audioPlayerEl.src=songsToPlay[0];
+//   audioPlayerEl.src=songURLsToPlay[0];
 //   console.log(audioPlayerEl);
 // }
