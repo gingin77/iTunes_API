@@ -2,10 +2,7 @@ let searchInputEl = document.getElementById("search_field");
 let buttonEl = document.getElementById("search_now");
 
 let url = "";
-let currentSongURLPlaying = [];
-let currentSongPlaying = [];
-let songURLsToPlay = [];
-let listOfPickedSongs = [];
+
 
 let results_container = document.getElementById("results_container");
 // let resultsArray = [];
@@ -69,19 +66,40 @@ function fetchGET() {
   })
 }
 
-function moveSelSongURLToPlayer(){ /*hmm I'm thinking I need to split up the play functionality from the move to player function...*/
+
+// variables that allow for memory and control of song sequence
+let songURLsToPlay = [];/* there is no in Q array because these 2 serve that purpose */
+let listOfPickedSongs = [];
+let currentSongURLPlaying = [];
+let currentSongPlaying = [];
+let nextSongURLPlaying = [];
+let nextSongPlaying = [];
+let previousSongURLPlaying = [];
+let previousSongPlaying = [];
+
+//Add event listener for onSongEnd to the audioPlayerEl
+let audioPlayerEl = document.getElementById('song_player');
+  // console.log(audioPlayerEl);
+audioPlayerEl.addEventListener('ended',onSongEnd, true);
+
+// function onSongEnd(){
+//     audioPlayerEl.currentTime = 0;
+//     console.log("song has ended");
+//   };
+
+function moveSelSongURLToPlayer(){
   console.log("A song has been selected");
-  let eventTarget=event.target;
-  console.log(eventTarget);
+    let eventTarget=event.target;
+      console.log(eventTarget);
 
   let urlForSelectedSong=eventTarget.getAttribute("url");/* << url for the song we want to play*/
-  songURLsToPlay.push(urlForSelectedSong);/*pass to subsequent functions*/
-  console.log(songURLsToPlay.length);
+    songURLsToPlay.push(urlForSelectedSong);/*pass to subsequent functions*/
+      console.log(songURLsToPlay.length);
 
-  let songInfo=eventTarget.getAttribute("value");
-  console.log(songInfo);
-  listOfPickedSongs.push(songInfo);
-  console.log((listOfPickedSongs.length), (listOfPickedSongs));
+  let songInfo=eventTarget.getAttribute("value");/* <<<Song title and artist to match the url...*/
+    console.log(songInfo);
+      listOfPickedSongs.push(songInfo);
+        console.log((listOfPickedSongs.length), (listOfPickedSongs));
 
   holdAndPlayOrHold(songURLsToPlay, listOfPickedSongs);
 }
@@ -90,7 +108,10 @@ function moveSelSongURLToPlayer(){ /*hmm I'm thinking I need to split up the pla
 // still need to hit ply though...
 // Also, it would be nice to show the song title, as well as a list of other selected songs
 
-function holdAndPlayOrHold(){ /*this function triggers the first picked song to play AND coordinates storage of Songs*/
+// I want to have a frame that lists: Current song playing
+// I want to show - last song and next song, plus 2 more.
+
+function holdAndPlayOrHold(){ /*this function triggers the first picked song to play AND introduces the currentSongArrasy, which will allow control over when clicked songs will play*/
   audioPlayerEl = document.getElementById('song_player');
 
   if (songURLsToPlay.length === 1){
@@ -98,178 +119,97 @@ function holdAndPlayOrHold(){ /*this function triggers the first picked song to 
     audioPlayerEl.src = songURLsToPlay[0];
     audioPlayerEl.play(); /* <<< Song is played here */
 
-    currentSongURLPlaying.push(songURLsToPlay);
-    currentSongPlaying.push(listOfPickedSongs);/* <<< Push song URL and info to respective apt CurrentSong arrays is played here */
+    currentSongURLPlaying.push(songURLsToPlay[0]);
+    currentSongPlaying.push(listOfPickedSongs[0]);/* <<< Push song URL and info to respective apt CurrentSong arrays is played here */
 
     console.log("The song currently playing is "+ currentSongPlaying[0]);
+    displaySongList(currentSongURLPlaying, currentSongPlaying);
   }
-  else if (songURLsToPlay.length > 1) {
-    storeSongs(songURLsToPlay, listOfPickedSongs);
+  else if (songURLsToPlay.length === 2) {
     console.log("another song was picked")
+
+    nextSongURLPlaying.push(songURLsToPlay[1]);
+    nextSongPlaying.push(listOfPickedSongs[1]);/* <<< Push song URL and info to respective apt CurrentSong arrays is played here */
+
+    console.log("The next song to play will be "+ nextSongPlaying[0]);
+    displaySongList(nextSongURLPlaying, nextSongPlaying);
   }
-}
-
-function nextSongQ(){ /*this is where I need to figure out how to set up the sequence....*/
-  console.log("a song has ended!");
-  if (listOfPickedSongs.length === 1){
-    console.log("There are no new song snippets to play");
-  } else if (listOfPickedSongs.length >= 2) {
-    audioPlayerEl.src = songURLsToPlay[1];
-    setTimeout (function(){
-    audioPlayerEl.play();
-    }, 2000);
-  } else if (listOfPickedSongs.length === 3) {
-    audioPlayerEl.src = songURLsToPlay[3];
-    setTimeout (function(){
-    audioPlayerEl.play();
-    }, 2000);
+  else if (songURLsToPlay.length >= 3) {
+    console.log("another song was picked and is in the que")
+    displaySongList(songURLsToPlay, listOfPickedSongs);
   }
+  // onSongEnd(currentSongURLPlaying);/* this did not help...*/
 }
 
-let lastSongPlayed = currentSongURLPlaying.shift;
 
-function storeSongs(){/*when writing this function, imagine a 2nd song being picekd. listOfPickedSongs.length and songURLsToPlay.length will both now be 2; listOfPickedSongs holds the song info; songURLsToPlay holds the url. I don't need to know mostRecentSongPosition to store the song; I need to know the eventTarget */
-console.log("song is in que")
 
-  // if (songURLsToPlay.length === 2 && audioPlayerEl.currentTime === 0){
-  //     audioPlayerEl.src=songURLsToPlay[1];
-  //     audioPlayerEl.play();
-  //   } else if ((songURLsToPlay.length === 2 && audioPlayerEl.currentTime !== 0)) {
-  //     console.log("song is in que")
-  //   }
-  //
-  // if (songURLsToPlay.length === 3 && audioPlayerEl.currentTime === 0){
-  //     audioPlayerEl.src=songURLsToPlay[2];
-  //     audioPlayerEl.play();
-  //   } else if ((songURLsToPlay.length === 2 && audioPlayerEl.currentTime !== 0)) {
-  //     console.log("song is in que")
-  //   }
+function onSongEnd(){ /*this is connected to the 'onended="onSongEnd()' attribute in the HTML ....*/
+  // audioPlayerEl = document.getElementById('song_player');
+console.log("a song has ended!");
+audioPlayerEl.src = nextSongURLPlaying[0];
+audioPlayerEl.play();
+
+  if (audioPlayerEl.currentTime === 0 && listOfPickedSongs.length === 1){
+        console.log("inside first onSongEnd if statemnt");
+        // let isPaused = audioPlayerEl.paused;
+        console.log("There are no new song snippets to play");
+            currentSongURLPlaying.shift();
+            currentSongPlaying.shift();
+            // audioPlayerEl.pause();
+    }
+
+    if (audioPlayerEl.currentTime === 0 && listOfPickedSongs.length >= 2) { /* && listOfPickedSongs.length < 11*/
+      console.log("A new song is about to start");
+      audioPlayerEl.src = nextSongURLPlaying[0];
+
+      currentSongURLPlaying.shift();
+      currentSongPlaying.shift();
+          currentSongURLPlaying.push(nextSongURLPlaying[0]);
+          currentSongPlaying.push(nextSongPlaying[0]);
+              // audioPlayerEl.src = currentSongURLPlaying[0];
+              console.log(audioPlayerEl.src);
+                  audioPlayerEl.play();
+                  //
+                  // setTimeout (function(){
+                  //   audioPlayerEl.play();
+                  //   }, 2000);
+
+    }
+    if (audioPlayerEl.currentTime === 0 && listOfPickedSongs.length === 11) {
+      console.log("Your storage que is full and songs will be removed from the beginning of the que")
+      listOfPickedSongs.shift;
+      songURLsToPlay.shift;
+    }
 }
-    // audioPlayerEl.src=songURLsToPlay[0];
-    // audioPlayerEl.nextSongQ(songURLsToPlay, listOfPickedSongs);
 
 
-  // else if (songURLsToPlay.length > 1) {
-  //   storeSongs(songURLsToPlay, listOfPickedSongs);
-  //   console.log("another song was picked")
-  // }
+function displaySongList(){
+  let queuPosition = (listOfPickedSongs.length - 1) /* how to set this up?*/
+  let songListEl = document.getElementById('songsToPlay');
+    console.log(songListEl);/* this should return the ul element*/
 
-//   let mostRecentSongPosition = (songURLsToPlay.length - 1);
-//   console.log(mostRecentSongPosition);
-//
-  // let currentstring = listOfPickedSongs[mostRecentSongPosition];
-  // console.log(currentstring)
-  //
-  // let songListEl = document.getElementById('songURLsToPlay');
-  // // console.log(songListEl);
-  // let newListItemEl = document.createElement( "li" );
-  // let listItemContent = document.createTextNode(listOfPickedSongs[0]);
-  // songListEl.appendChild( newListItemEl );
-  // newListItemEl.appendChild( listItemContent );
-  //
-  // audioPlayerEl.src=songURLsToPlay[mostRecentSongPosition];
-  // audioPlayerEl.play();
-
-
-
-  //   // audioPlayerEl.play(songURLsToPlay[1]);
-  //     // listOfPickedSongs.length = 2;
-  // }
-  // if (listOfPickedSongs.length > 1) {
-  //   let nextSong = audioPlayerEl.src = songURLsToPlay[1];
-  //   currentSongPlaying.push(nextSong);
-  //   audioPlayerEl.play();
-  //   songURLsToPlay.shift;
-  // }
-  // if (listOfPickedSongs.length === 3) {
-  //   audioPlayerEl.src=songURLsToPlay[2];
-  //   audioPlayerEl.play();
-  //
-  // }
-  // if (listOfPickedSongs.length === 4) {
-  //   audioPlayerEl.src=songURLsToPlay[3];
-  //   audioPlayerEl.play();
-  //   songURLsToPlay.shift;
-  //   // songInfo.shift;
-  // }
-
-
-//
-// document.getElementById('player').play()"
-// document.getElementById('player').pause()"
-// document.getElementById('player').volume += 0.1
-// document.getElementById('player').volume -= 0.1
-
-
-// <audio controls="controls">
-//     <source src=${audio} type="audio/mp4">
-// </audio>
-
-
-// let aud = new Audio();
-// aud.src = x;
-// aud.play()
-// http://www.binarytides.com/using-html5-audio-element-javascript/
-//
-// index.html:1 Uncaught (in promise) DOMException: Failed to load because no supported source was found.
-// Promise (async)
-// (anonymous) @ main.js:123
-
-// var aud = new Audio();
-// aud.src = 'sound.ogg';
-//
-// //You could also do
-// var aud = new Audio('sound.ogg');
-//
-// //Now lets play the music
-// aud.play();
-// // http://www.binarytides.com/using-html5-audio-element-javascript/
-//
-
-// For how to style controls or make my own onclick buttons.... https://stackoverflow.com/questions/4126708/is-it-possible-to-style-html5-audio-tag
-
-// <body>
-//
-// <p>Click the button to find out if the onclick event is a bubbling event.</p>
-//
-// myFunction(event)">Try it</button>
-//
-// <p id="demo"></p>
-//
-// <script>
-// function myFunction(event) {
-//     var x = event.bubbles;
-//     document.getElementById("demo").innerHTML = x;
-// }
-// </script>
-
-
-
-// <script src="https://.../search?parameterkeyvalue&callback="{name of JavaScript function in webpage}"/>
-//
-// artistName
-// collectionName
-// previewUrl - audio
-// trackName
-// artworkUrl100 "http://is5.mzstatic.com/image/thumb/Music69/v4/32/44/08/324408b9-c9ad-e8c1-17ec-132b15dada48/source/100x100bb.jpg"
-
-// use to modify the input styles: https://www.w3schools.com/jsref/event_onfocusout.asp
-
-
-//
-// Original code with console.log notes....
-// function moveSelSongToPlayer(){
-//   console.log("A song has been selected");
-//   let eventTarget=event.target;
-//   console.log(eventTarget);
-//   let urlForSelectedSong=eventTarget.getAttribute("url");/* << url for the song we want to play*/
-//   console.log(urlForSelectedSong);
-//   songURLsToPlay.push(urlForSelectedSong);
-//   console.log(songURLsToPlay);
-//
-//   let audioPlayerEl = document.getElementById('song_player');
-//   console.log(audioPlayerEl);
-//
-//   audioPlayerEl.src=songURLsToPlay[0];
-//   console.log(audioPlayerEl);
-// }
+    if (listOfPickedSongs.length === 1){
+      let currentSongListItemEl = document.createElement( "li" );
+      let currentSongListItemContent = document.createTextNode("Currently playing: " + currentSongPlaying[0]);
+        songListEl.appendChild( currentSongListItemEl );
+        currentSongListItemEl.appendChild( currentSongListItemContent );
+    }
+    if (listOfPickedSongs.length === 2){
+      let nextSongListItemEl = document.createElement( "li" );
+      let nextSongListItemContent = document.createTextNode("The next song will be: " + nextSongPlaying[0]);
+        songListEl.appendChild( nextSongListItemEl );
+        nextSongListItemEl.appendChild( nextSongListItemContent );
+    }
+    if (listOfPickedSongs.length >= 3 && listOfPickedSongs.length <= 10){
+      let queuSongListItemEl = document.createElement( "li" );
+      let queuSongListItemContent = document.createTextNode(listOfPickedSongs[queuPosition]);
+        songListEl.appendChild( queuSongListItemEl );
+        queuSongListItemEl.appendChild( queuSongListItemContent );
+    }
+    if (listOfPickedSongs.length === 11){
+        let lastQueuSongListItemEl = document.createElement( "li" );
+        let lastQueuSongListItemContent = document.createTextNode("Your storage que is full and songs will be removed from the beginning of the que");
+          songListEl.appendChild( queuSongListItemEl );
+          queuSongListItemEl.appendChild( queuSongListItemContent );
+        }
+}
