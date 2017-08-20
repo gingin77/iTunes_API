@@ -94,10 +94,10 @@ function moveSelSongURLToPlayer(){
 
   let urlForSelectedSong=eventTarget.getAttribute("url");/* << url for the song we want to play*/
     songURLsToPlay.push(urlForSelectedSong);/*pass to subsequent functions*/
-      console.log(songURLsToPlay.length);
+      // console.log(songURLsToPlay.length);
 
   let songInfo=eventTarget.getAttribute("value");/* <<<Song title and artist to match the url...*/
-    console.log(songInfo);
+    // console.log(songInfo);
       listOfPickedSongs.push(songInfo);
         console.log((listOfPickedSongs.length), (listOfPickedSongs));
 
@@ -118,6 +118,7 @@ function holdAndPlayOrHold(){ /*this function triggers the first picked song to 
 
     audioPlayerEl.src = songURLsToPlay[0];
     audioPlayerEl.play(); /* <<< Song is played here */
+    // audioPlayerEl.pause();
 
     currentSongURLPlaying.push(songURLsToPlay[0]);
     currentSongPlaying.push(listOfPickedSongs[0]);/* <<< Push song URL and info to respective apt CurrentSong arrays is played here */
@@ -125,8 +126,8 @@ function holdAndPlayOrHold(){ /*this function triggers the first picked song to 
     console.log("The song currently playing is "+ currentSongPlaying[0]);
     displaySongList(currentSongURLPlaying, currentSongPlaying);
   }
-  else if (songURLsToPlay.length === 2) {
-    console.log("another song was picked")
+  if (songURLsToPlay.length === 2) {
+    console.log("a 2nd song was picked")
 
     nextSongURLPlaying.push(songURLsToPlay[1]);
     nextSongPlaying.push(listOfPickedSongs[1]);/* <<< Push song URL and info to respective apt CurrentSong arrays is played here */
@@ -134,11 +135,16 @@ function holdAndPlayOrHold(){ /*this function triggers the first picked song to 
     console.log("The next song to play will be "+ nextSongPlaying[0]);
     displaySongList(nextSongURLPlaying, nextSongPlaying);
   }
-  else if (songURLsToPlay.length >= 3) {
-    console.log("another song was picked and is in the que")
+  if (songURLsToPlay.length > 2) {
+    console.log("a 3rd song was picked and is in the que")
     displaySongList(songURLsToPlay, listOfPickedSongs);
-  }
+    // onSongEndWithThreeOrMoreSongs(songURLsToPlay, listOfPickedSongs);
+  // if (songURLsToPlay.length === 4) {
+  //   console.log("a 4th song was picked and is in the que")
+  //   displaySongList(songURLsToPlay, listOfPickedSongs);
+  // }
   // onSongEnd(currentSongURLPlaying);/* this did not help...*/
+  }
 }
 
 
@@ -146,47 +152,93 @@ function holdAndPlayOrHold(){ /*this function triggers the first picked song to 
 function onSongEnd(){ /*this is connected to the 'onended="onSongEnd()' attribute in the HTML ....*/
   // audioPlayerEl = document.getElementById('song_player');
 console.log("a song has ended!");
-audioPlayerEl.src = nextSongURLPlaying[0];
-audioPlayerEl.play();
 
-  if (audioPlayerEl.currentTime === 0 && listOfPickedSongs.length === 1){
-        console.log("inside first onSongEnd if statemnt");
-        // let isPaused = audioPlayerEl.paused;
+  if (listOfPickedSongs.length === 1){
+    audioPlayerEl.pause();
         console.log("There are no new song snippets to play");
+            previousSongURLPlaying.push(currentSongURLPlaying.shift());
+            previousSongPlaying.push(currentSongPlaying.shift());
+            // console.log(previousSongPlaying);
+            console.log("The array for previousSongPlaying, includes " + previousSongPlaying + ".  When the last song ended, the array for currentSongPlaying should be empty and right now it holds: " + currentSongPlaying);
+            updateDisplaySongList(currentSongPlaying, previousSongPlaying);
+
+    }
+  if (listOfPickedSongs.length >= 2) { /* && listOfPickedSongs.length < 11*/
+      console.log("song ended and loop is in progress!");
+      console.log("Outside of the loop, the array for currentSongPlaying includes: " + currentSongPlaying + "and the array for nextSongPlaying, includes " + nextSongPlaying);
+
+
+
+
+  
+
+
+          for (let s = 0; s < listOfPickedSongs.length; s++){
+            console.log("A new song is about to start");
+            let q = s+1;
+            audioPlayerEl.src = songURLsToPlay[s];
+            audioPlayerEl.load();
+            audioPlayerEl.pause();
+            // setTimeout(function() {
+                audioPlayerEl.play();
+                console.log(songURLsToPlay[s]);
+                audioPlayerEl.currentTime = 2;
+                console.log("ended");
+                // console.log("This was delayed by 3 seconds!");
+            // }, 3000);
+
+            // audioPlayerEl.src = nextSongURLPlaying[0];
+
             currentSongURLPlaying.shift();
             currentSongPlaying.shift();
-            // audioPlayerEl.pause();
-    }
+                currentSongURLPlaying.push(nextSongURLPlaying[0]);
+                currentSongPlaying.push(nextSongPlaying[0]);
 
-    if (audioPlayerEl.currentTime === 0 && listOfPickedSongs.length >= 2) { /* && listOfPickedSongs.length < 11*/
-      console.log("A new song is about to start");
-      audioPlayerEl.src = nextSongURLPlaying[0];
+            nextSongURLPlaying.push(songURLsToPlay[q]);
+            nextSongPlaying.push(listOfPickedSongs[q]);
+            console.log(nextSongPlaying.length, (nextSongPlaying));
 
-      currentSongURLPlaying.shift();
-      currentSongPlaying.shift();
-          currentSongURLPlaying.push(nextSongURLPlaying[0]);
-          currentSongPlaying.push(nextSongPlaying[0]);
-              // audioPlayerEl.src = currentSongURLPlaying[0];
-              console.log(audioPlayerEl.src);
-                  audioPlayerEl.play();
-                  //
-                  // setTimeout (function(){
-                  //   audioPlayerEl.play();
-                  //   }, 2000);
+              console.log("Inside the loop, the array for currentSongPlaying includes: " + currentSongPlaying + "and the array for nextSongPlaying, includes " + nextSongPlaying);
+              setTimeout(function() {
+                  console.log("This was delayed by one second!");
+              }, 1000);
+              }
+            }
 
-    }
-    if (audioPlayerEl.currentTime === 0 && listOfPickedSongs.length === 11) {
-      console.log("Your storage que is full and songs will be removed from the beginning of the que")
-      listOfPickedSongs.shift;
-      songURLsToPlay.shift;
-    }
+
+
+    //   audioPlayerEl.src = nextSongURLPlaying[0];
+    //   audioPlayerEl.load();
+    //   audioPlayerEl.play();
+    //   // audioPlayerEl.src = nextSongURLPlaying[0];
+    //
+    //   currentSongURLPlaying.shift();
+    //   currentSongPlaying.shift();
+    //       currentSongURLPlaying.push(nextSongURLPlaying[0]);
+    //       currentSongPlaying.push(nextSongPlaying[0]);
+    //           // audioPlayerEl.src = currentSongURLPlaying[0];
+    //           // console.log(audioPlayerEl.src);
+    //           //     audioPlayerEl.play();
+    //               //
+    //               // setTimeout (function(){
+    //               //   audioPlayerEl.play();
+    //               //   }, 2000);
+    //
+    //       console.log("when this song ended, the array for currentSongPlaying includes: " + currentSongPlaying + "and the array for nextSongPlaying, includes " + nextSongPlaying);
+    //
+    // }
+    // if (listOfPickedSongs.length === 11) {
+    //   console.log("Your storage que is full and songs will be removed from the beginning of the que")
+    //   listOfPickedSongs.shift;
+    //   songURLsToPlay.shift;
+    // }
 }
-
 
 function displaySongList(){
   let queuPosition = (listOfPickedSongs.length - 1) /* how to set this up?*/
   let songListEl = document.getElementById('songsToPlay');
-    console.log(songListEl);/* this should return the ul element*/
+
+    console.log("The displaySongList function has been activated");/* this should return the ul element*/
 
     if (listOfPickedSongs.length === 1){
       let currentSongListItemEl = document.createElement( "li" );
@@ -200,16 +252,18 @@ function displaySongList(){
         songListEl.appendChild( nextSongListItemEl );
         nextSongListItemEl.appendChild( nextSongListItemContent );
     }
-    if (listOfPickedSongs.length >= 3 && listOfPickedSongs.length <= 10){
+    if (listOfPickedSongs.length >= 3 && listOfPickedSongs.length <= 5){
       let queuSongListItemEl = document.createElement( "li" );
       let queuSongListItemContent = document.createTextNode(listOfPickedSongs[queuPosition]);
         songListEl.appendChild( queuSongListItemEl );
         queuSongListItemEl.appendChild( queuSongListItemContent );
     }
-    if (listOfPickedSongs.length === 11){
+    if (listOfPickedSongs.length === 5){
         let lastQueuSongListItemEl = document.createElement( "li" );
         let lastQueuSongListItemContent = document.createTextNode("Your storage que is full and songs will be removed from the beginning of the que");
           songListEl.appendChild( queuSongListItemEl );
           queuSongListItemEl.appendChild( queuSongListItemContent );
         }
 }
+
+// updateDisplaySongList(currentSongPlaying, previousSongPlaying);
