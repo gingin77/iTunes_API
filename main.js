@@ -1,17 +1,14 @@
 let searchInputEl = document.getElementById("search_field");
 let buttonEl = document.getElementById("search_now");
-
 let url = "";
-
 
 let results_container = document.getElementById("results_container");
 // let resultsArray = [];
-
+//
 buttonEl.addEventListener('click', function(e) {
   let search_termVal = searchInputEl.value;
 
   if (search_termVal) {
-    // alert("Hang on a sec.....");
     searchInputEl.value = "";
   }
   console.log(search_termVal);
@@ -19,6 +16,18 @@ buttonEl.addEventListener('click', function(e) {
   console.log(url);
   fetchGET(url);
 });
+
+// searchInputEl.addEventListener('keypress', function(k) {
+//   let search_termVal = searchInputEl.value;
+//   let key = k.which || k.keyCode;
+//
+//   if(key === 13){
+//     // searchInputEl.value = "";
+//     url = ("https://itunes.apple.com/search?term="+search_termVal);
+//     console.log(url);
+//     fetchGET(url);
+//   }
+// });
 
 function fetchGET() {
   fetch(url)
@@ -181,15 +190,11 @@ function playSequence(){
   audioPlayerEl.src = songURL;
   audioPlayerEl.load();
   audioPlayerEl.pause();
-    // setTimeout (function(){
-      audioPlayerEl.play();
-    // }, 1000);
+  audioPlayerEl.play();
 }
 
 function adjustSongsInPlaceHolderArrays(){
   console.log("the adjustSongsInPlaceHolderArrays funciton was activated");
-
-
   console.log(currentSongPlaying);
   console.log((nextSongPlaying), (nextSongPlaying.length));
 
