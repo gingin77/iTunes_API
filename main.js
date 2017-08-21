@@ -88,11 +88,6 @@ let audioPlayerEl = document.getElementById('song_player');
   // console.log(audioPlayerEl);
 audioPlayerEl.addEventListener('ended',onSongEnd, true);
 
-// function onSongEnd(){
-//     audioPlayerEl.currentTime = 0;
-//     console.log("song has ended");
-//   };
-
 function moveSelSongURLToPlayer(){
   console.log("A song has been selected");
     let eventTarget=event.target;
@@ -228,46 +223,11 @@ function adjustSongsInPlaceHolderArrays(){
   nextSongPlaying.push(listOfPickedSongs[positionOfNextSong]);
   nextSongURLPlaying.push(songURLsToPlay[positionOfNextSong]);
   console.log(nextSongPlaying);
-
 }
 
-// function positionLoop(){
-//   for( let s = 0; s < listOfPickedSongs.length; s++ ){
-//     if( listOfPickedSongs[ s ] === currentSongPlaying[0] ){
-//       {break;}
-//       positionOfCurrentSong = s;
-//       console.log(positionOfCurrentSong);
-//       positionOfNextSong = positionOfCurrentSong + 1;
-//       console.log(positionOfNextSong);
-//     }
-//   }
-// }
   // else if ((songURLsToPlay.length > 1) && (currentSongPlaying.length === 0))
   // else if ((songURLsToPlay.length > 1) && (currentSongPlaying.length !== 0) && (nextSongURLPlaying.length === 0))
   // else if ((songURLsToPlay.length > 1) && (currentSongPlaying.length !== 0) && (nextSongURLPlaying.length !== 0))
-  //
-
-
-
-
-  // if (audioPlayerEl.currentTime = 1) {
-  //   currentSongURLPlaying.shift();
-  //   currentSongPlaying.shift();
-  //       currentSongURLPlaying.push(nextSongURLPlaying[0]);
-  //       currentSongPlaying.push(nextSongPlaying[0]);
-  //
-  //   nextSongURLPlaying.push(songURLsToPlay[q]);
-  //   nextSongPlaying.push(listOfPickedSongs[q]);
-  //   console.log(nextSongPlaying.length, (nextSongPlaying));
-  //
-  //   setTimeout(function() {
-  //     console.log("Inside the loop, the array for currentSongPlaying includes: " + currentSongPlaying + "and the array for nextSongPlaying, includes " + nextSongPlaying);
-  //
-  //     console.log(songURLsToPlay[s]);
-  //   }, 1000);
-  // }
-
-
 
 function displaySongList(){
   let queuPosition = (listOfPickedSongs.length - 1) /* how to set this up?*/
@@ -300,11 +260,3 @@ function displaySongList(){
           queuSongListItemEl.appendChild( queuSongListItemContent );
         }
 }
-
-// updateDisplaySongList(currentSongPlaying, previousSongPlaying);
-
-// if (listOfPickedSongs.length >= 2) { /* && listOfPickedSongs.length < 11*/
-//     console.log("song ended and loop is in progress!");
-//     console.log("Outside of the loop, the array for currentSongPlaying includes: " + currentSongPlaying + "and the array for nextSongPlaying, includes " + nextSongPlaying);
-//     // playSequence(nextSongURLPlaying);
-//
