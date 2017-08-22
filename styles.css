@@ -40,6 +40,23 @@ h4, h3{
   margin: 0em;
 }
 
+input{
+  padding: 10px 300px;
+  border-color: #9EA8A5;
+  border-style: double;
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 30px white inset;
+}
+
+button{
+  padding: 10px 6px 10px 6px;
+  border-style: solid;
+  border-image: none;
+  background-color: #9EA8A5;
+}
+
 #results_container{
   display: inline-flex;
   flex-wrap: wrap;
