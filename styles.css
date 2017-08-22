@@ -32,6 +32,8 @@ h2, span {
 
 ul{
   font-family: 'Comfortaa', cursive;
+  list-style-type: lao;
+  font-style: italic;
 }
 
 h4, h3{
@@ -61,6 +63,11 @@ img{
 }
 
 .current_song{
-  color: #905A64;
-  text-shadow: 2px 2px 4px #000000;
+  color: #2A433F;
+}
+
+
+
+.already_played{
+  color: #9EA8A5;
 }

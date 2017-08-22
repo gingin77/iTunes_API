@@ -181,9 +181,10 @@ console.log("a song has ended!");
         console.log("The array for currentSongPlaying includes: " + currentSongPlaying + "and will be replaced with the nextSongPlaying, which is: " + nextSongPlaying);
         songURL = nextSongURLPlaying[0];
 
-        adjustSongsInPlaceHolderArrays(currentSongPlaying);
         playSequence(songURL);
-        labelPrevious();
+        adjustSongsInPlaceHolderArrays(currentSongPlaying);
+        annotateAndUpdateSongList();
+        labelPreviousSongs();
     }
 }
 
@@ -229,7 +230,7 @@ function adjustSongsInPlaceHolderArrays(){
   nextSongPlaying.push(listOfPickedSongs[positionOfNextSong]);
   nextSongURLPlaying.push(songURLsToPlay[positionOfNextSong]);
   console.log(nextSongPlaying);
-  displaySongList()
+  // displaySongList()
 }
 
   // else if ((songURLsToPlay.length > 1) && (currentSongPlaying.length === 0))
@@ -276,17 +277,9 @@ function annotateAndUpdateSongList(){
     nextSonginList.classList.add("next_song");
   }
 }
-// }
-// function annotateAndUpdateSongList2() {
-  // if (previousSongPlaying[0] !== "undefined"){
-  //   let findPrevSong = listOfPickedSongs.indexOf(previousSongPlaying[0]);
-  //   console.log(findPrevSong);
-  //   let lastPrevSonginList = document.getElementById(findPrevSong);
-  //   console.log(lastPrevSonginList);
-  //   lastPrevSonginList.classList.remove("current_song");
-  //   lastPrevSonginList.classList.add("already_played");
 
-function labelPrevious(){
+
+function labelPreviousSongs(){
   let prevSong = document.querySelector("li.current_song");
   console.log(prevSong);
   prevSong.classList.remove("current_song");
