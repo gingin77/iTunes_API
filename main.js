@@ -183,6 +183,7 @@ console.log("a song has ended!");
 
         adjustSongsInPlaceHolderArrays(currentSongPlaying);
         playSequence(songURL);
+        labelPrevious();
     }
 }
 
@@ -228,6 +229,7 @@ function adjustSongsInPlaceHolderArrays(){
   nextSongPlaying.push(listOfPickedSongs[positionOfNextSong]);
   nextSongURLPlaying.push(songURLsToPlay[positionOfNextSong]);
   console.log(nextSongPlaying);
+  displaySongList()
 }
 
   // else if ((songURLsToPlay.length > 1) && (currentSongPlaying.length === 0))
@@ -240,28 +242,93 @@ function displaySongList(){
 
     console.log("The displaySongList function has been activated");/* this should return the ul element*/
 
-    if (listOfPickedSongs.length === 1){
-      let currentSongListItemEl = document.createElement( "li" );
-      let currentSongListItemContent = document.createTextNode("Currently playing: " + currentSongPlaying[0]);
-        songListEl.appendChild( currentSongListItemEl );
-        currentSongListItemEl.appendChild( currentSongListItemContent );
-    }
-    if (listOfPickedSongs.length === 2){
-      let nextSongListItemEl = document.createElement( "li" );
-      let nextSongListItemContent = document.createTextNode("The next song will be: " + nextSongPlaying[0]);
-        songListEl.appendChild( nextSongListItemEl );
-        nextSongListItemEl.appendChild( nextSongListItemContent );
-    }
-    if (listOfPickedSongs.length >= 3 && listOfPickedSongs.length <= 5){
       let queuSongListItemEl = document.createElement( "li" );
       let queuSongListItemContent = document.createTextNode(listOfPickedSongs[queuPosition]);
         songListEl.appendChild( queuSongListItemEl );
+        queuSongListItemEl.setAttribute( "id", queuPosition );
         queuSongListItemEl.appendChild( queuSongListItemContent );
-    }
-    if (listOfPickedSongs.length === 5){
-        let lastQueuSongListItemEl = document.createElement( "li" );
-        let lastQueuSongListItemContent = document.createTextNode("Your storage que is full and songs will be removed from the beginning of the que");
-          songListEl.appendChild( queuSongListItemEl );
-          queuSongListItemEl.appendChild( queuSongListItemContent );
-        }
+
+        annotateAndUpdateSongList();
+        // if
+        // annotateAndUpdateSongList2()
+  }
+
+function annotateAndUpdateSongList(){
+  let findCurrentSong = listOfPickedSongs.indexOf(currentSongPlaying[0]);
+  console.log(findCurrentSong);
+  let currentSongPosInList = document.getElementById(findCurrentSong);
+  console.log(currentSongPosInList);
+  console.log(currentSongPosInList.length);
+  currentSongPosInList.classList.add("current_song");
+
+  if (currentSongPosInList.length = 1){
+    currentSongPosInList.classList.remove("next_song");
+    currentSongPosInList.classList.add("current_song");
+  } else {
+    currentSongPosInList.classList.add("current_song");
+  }
+
+  if (nextSongPlaying.length >= 1 ){
+    let findNextSong = listOfPickedSongs.indexOf(nextSongPlaying[0]);
+    console.log(findNextSong);
+    let nextSonginList = document.getElementById(findNextSong);
+    console.log(nextSonginList);
+    nextSonginList.classList.add("next_song");
+  }
 }
+// }
+// function annotateAndUpdateSongList2() {
+  // if (previousSongPlaying[0] !== "undefined"){
+  //   let findPrevSong = listOfPickedSongs.indexOf(previousSongPlaying[0]);
+  //   console.log(findPrevSong);
+  //   let lastPrevSonginList = document.getElementById(findPrevSong);
+  //   console.log(lastPrevSonginList);
+  //   lastPrevSonginList.classList.remove("current_song");
+  //   lastPrevSonginList.classList.add("already_played");
+
+function labelPrevious(){
+  let prevSong = document.querySelector("li.current_song");
+  console.log(prevSong);
+  prevSong.classList.remove("current_song");
+  prevSong.classList.add("already_played");
+}
+
+
+
+
+
+// if (currentSongPosInList.length >= 1){
+//   currentSongPosInList.classList.remove("next_song");
+//   currentSongPosInList.classList.add("current_song");
+// } else {
+//   currentSongPosInList.classList.add("current_song");
+// }
+
+
+
+
+      // Original displaySongList funciton code
+    // if (listOfPickedSongs.length === 1){
+    //   let currentSongListItemEl = document.createElement( "li" );
+    //   let currentSongListItemContent = document.createTextNode("Currently playing: " + currentSongPlaying[0]);
+    //     songListEl.appendChild( currentSongListItemEl );
+    //     currentSongListItemEl.appendChild( currentSongListItemContent );
+    // }
+    // if (listOfPickedSongs.length === 2){
+    //   let nextSongListItemEl = document.createElement( "li" );
+    //   let nextSongListItemContent = document.createTextNode("The next song will be: " + nextSongPlaying[0]);
+    //     songListEl.appendChild( nextSongListItemEl );
+    //     nextSongListItemEl.appendChild( nextSongListItemContent );
+    // }
+    // if (listOfPickedSongs.length >= 3 && listOfPickedSongs.length <= 5){
+    //   let queuSongListItemEl = document.createElement( "li" );
+    //   let queuSongListItemContent = document.createTextNode(listOfPickedSongs[queuPosition]);
+    //     songListEl.appendChild( queuSongListItemEl );
+    //     queuSongListItemEl.appendChild( queuSongListItemContent );
+    // }
+    // if (listOfPickedSongs.length === 5){
+    //     let lastQueuSongListItemEl = document.createElement( "li" );
+    //     let lastQueuSongListItemContent = document.createTextNode("Your storage que is full and songs will be removed from the beginning of the que");
+    //       songListEl.appendChild( queuSongListItemEl );
+    //       queuSongListItemEl.appendChild( queuSongListItemContent );
+    //     }
