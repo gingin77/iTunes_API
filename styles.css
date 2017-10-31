@@ -11,7 +11,8 @@ font-family: 'Amatic SC', cursive;
 
 http://www.heropatterns.com/
 
-Color pallette
+Color pallette - Cool grey lite
+http://www.color-hex.com/color-palette/37873
 
 lightest: #ececec	(236,236,236) << used for background
 #cbcfd2	(203,207,210)
@@ -45,51 +46,83 @@ ul{
   font-family: 'Comfortaa', cursive;
   list-style-type: lao;
   font-style: italic;
+  margin: 2% 0 4% 0;
+  color: #767b8d;
 }
 
 h4, h3{
   margin: 0em;
 }
 
-input{
-  padding: 10px 300px;
-  border-color: #9EA8A5;
+.form_elements{
+  display: flex;
+  justify-content: space-around;
+}
+
+input, button{
+  font-family: 'Comfortaa', cursive;
+  font-size: 16px;
+  padding: 10px;
+  border-color: #767b8d;
   border-style: double;
+  border-radius: 10px;
 }
 
 input:-webkit-autofill {
     -webkit-box-shadow: 0 0 0 30px white inset;
 }
 
+input{
+  flex-grow: 2;
+  margin-right: 1%;
+}
+
 button{
-  padding: 10px 6px 10px 6px;
-  border-style: solid;
-  border-image: none;
-  background-color: #9EA8A5;
+  /*padding: 10px 6px 10px 6px;*/
+  background-color: #8b929a;
+  color: #ececec;
+  width: 20%;
+}
+
+audio{
+  width: 100%;
 }
 
 .header_features{
-  background-color: #cbcfd2;
+  margin: 0 2%;
+  display: flex;
+  flex-direction: column;
+  background-color: #eaebed;
   border: #767b8d solid;
   padding: 2%;
   border-radius: 15px;
 }
 
+section{
+  margin: 0 2%;
+}
+
 #results_container{
   display: inline-flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
 
 .item {
   font-family: 'Comfortaa', cursive;
-  font-weight: 900;
-  border: 2px solid;
-  width: 20vw;
+  font-weight: 700;
+  background-color: #eaebed;
+  border: #767b8d solid;
+  border-radius: 15px;
+
+  width: 12vw;
+  padding: 1.5%;
+  margin: 0.5%;
+
   text-align: center;
+  font-size: 0.5em;
   display: flex;
   flex-direction: column;
-  margin: 15px;
 }
 
 img{
@@ -98,9 +131,16 @@ img{
 }
 
 .current_song{
-  color: #2A433F;
+  color: #525662;
 }
 
 .already_played{
-  color: #9EA8A5;
+  color: #a7adb2;
 }
+
+
+/*lightest: #ececec	(236,236,236) << used for background
+#cbcfd2	(203,207,210)
+#a7adb2	(167,173,178)
+#8b929a	(139,146,154)
+#767b8d	(118,123,141)*/
