@@ -89,7 +89,7 @@ audio{
 }
 
 .header_features{
-  margin: 0 2%;
+  margin: 0 2% 1% 2%;
   display: flex;
   flex-direction: column;
   background-color: #eaebed;
