@@ -3,50 +3,43 @@
  	<head>
  		<meta charset="utf-8">
  		<meta http-equiv="X-UA-Compatible" content="IE=edge">
- 		<title></title>
+ 		<title>Song Snippets</title>
  		<meta name="description" content=" " />
  		<meta name="author" content=" " />
  		<meta name="HandheldFriendly" content="true" />
  		<meta name="MobileOptimized" content="320" />
  		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
  		<link rel="stylesheet" type="text/css" href="styles.css">
-    <!-- <link rel="stylesheet" href="colorify.css"> -->
-    <link href="https://fonts.googleapis.com/css?family=Amatica+SC|Barrio|Bungee+Shade|Comfortaa|Elsie|Faster+One|Flamenco|Monoton|Righteous|Snowburst+One" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC|Comfortaa|Faster+One|Fugaz+One|Megrim|Monofett|Monoton|Sonsie+One|Wallpoet" rel="stylesheet">
  	</head>
  	<body>
     <header>
-      <h1>Find Your Favorite Tunes</h1>
-      <span></span>
-      <audio src="http://a922.phobos.apple.com/us/r30/Music7/v4/ed/88/6e/ed886ee5-8b1a-d8d0-7061-2b0a39e88927/mzaf_6541725816985423280.plus.aac.p.m4a" controls preload="none" style="width:480px" id="song_player">
-        <!-- onended="onSongEnd()" -->
-      </audio>
-      <ul id="songsToPlay">
+      <h1>Song Snippet Playlist</h1>
+      <div class="header_features">
+        <div class="audio_container">
+          <audio src="http://a922.phobos.apple.com/us/r30/Music7/v4/ed/88/6e/ed886ee5-8b1a-d8d0-7061-2b0a39e88927/mzaf_6541725816985423280.plus.aac.p.m4a" controls preload="none" style="width:480px" id="song_player">
+          </audio>
+        </div>
+        <div class="playlist_container">
+          <ul id="songsToPlay">
 
-      </ul>
-      <form>
-         <label for="search_field"></label>
-         <input type="text" name="q" id="search_field" placeholder="Who is your favorite artist?" autocomplete="on" size="30">
-         <button type="button" id="search_now">Search!</button>
-      </form>
+          </ul>
+        </div>
+        <div class="form-div">
+          <form>
+             <label for="search_field"></label>
+             <input type="text" name="q" id="search_field" placeholder="Who is your favorite artist?" autocomplete="on" size="30">
+             <button type="button" id="search_now">Search!</button>
+          </form>
+        </div>
+      </div>
+
       </header>
       <section>
           <h2>Search Results</h2>
           <div id="results_container">
           </div>
       </section>
-  <script src="colorify.min.js"></script>
  	<script type="text/javascript" src="main.js"></script>
  	</body>
  </html>
-
- <!--Refs
- for audiot - https://coolestguidesontheplanet.com/html-5-audio/
-
-  -->
-
-  <!-- <div>
-    <button>Play</button>
-    <button>Pause</button>
-    <button>Vol+ </button>
-    <button>Vol- </button>
-  </div> -->
