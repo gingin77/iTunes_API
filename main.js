@@ -61,7 +61,6 @@ let currentSongPlaying = []
 let nextSongURLArray = []
 let nextSongArray = []
 
-let positionOfNextSong = ''
 let songURL = ''
 
 let prevURL = []
@@ -84,47 +83,29 @@ function moveChosenSongToPlayer () {
 function playNowOrSave () {
   audioPlayerEl = document.getElementById('song_player')
   let pickedSongInxPos = (songsMainArray.length - 1)
-
-  if (songsMainArray.length === 1) {
-    songURL = songURLsMain[0]
-    playSequence(songURL)
-    pushSongsToCurrent(songURLsMain[0], songsMainArray[0])
-
-  } else if ((songsMainArray.length > 1) && (currentSongPlaying.length === 0)) {
-    // this is for when a song has already played and is over, so the currentSongPlaying array is empty.
-    songURL = songURLsMain[pickedSongInxPos]
-    playSequence(songURL)
+  if (currentSongPlaying.length === 0) {
+    playSequence(songURLsMain[pickedSongInxPos])
+    displaySongList()
     pushSongsToCurrent(songURLsMain[pickedSongInxPos], songsMainArray[pickedSongInxPos])
-
-  } else if ((songsMainArray.length > 1) && (currentSongPlaying.length !== 0) && (nextSongArray.length === 0)) {
-    // this is for when a song is playing but a 'next song' has NOT yet been designated.
+  } else if ((currentSongPlaying.length !== 0) && (nextSongArray.length === 0)) {
+    displaySongList()
     pushSongsToNext(songURLsMain[pickedSongInxPos], songsMainArray[pickedSongInxPos])
+  } else {
+    displaySongList()
   }
-  displaySongList()
 }
 
 function onSongEnd () {
-  if (songsMainArray.length === 1) {
-    console.log('onSongEnd if option 1 was triggered')
+  if (nextSongArray.length === 0){
     audioPlayerEl.pause()
+    transferCurrentToPrev ()
+  } else {
     transferCurrentToPrev()
-  } else if (songsMainArray.length > 1) {
-    if (nextSongArray.length === 0){
-      console.log('onSongEnd else if, if option 2 was triggered')
-      audioPlayerEl.pause()
-      transferCurrentToPrev ()
-    } else {
-      console.log('onSongEnd else if, else option 3 was triggered')
-      transferCurrentToPrev()
-      songURL = nextSongURLArray[0]
-      playSequence(songURL)
-      transferNextToCurrent()
-      ifNextSong()
-    }
+    playSequence(nextSongURLArray[0])
+    transferNextToCurrent()
+    ifNextSong()
   }
-  // labelPreviousSongs(currentSongURLPlaying[0], currentSongPlaying[0])
 }
-
 
 function playSequence (songURL) {
   audioPlayerEl.src = songURL
@@ -134,33 +115,27 @@ function playSequence (songURL) {
 }
 
 function pushSongsToCurrent (url, info){
-  console.log('pushSongsToCurrent was triggered')
   currentSongURLPlaying.push(url)
   currentSongPlaying.push(info)
+  labelCurrentSong()
 }
 
 function pushSongsToNext (url, info){
-  console.log('pushSongsToNext was triggered')
   nextSongURLArray.push(url)
   nextSongArray.push(info)
+  labelNextSong()
 }
 
 function transferCurrentToPrev () {
-  console.log('transferCurrentToPrev was triggered')
   prevURL.push(currentSongURLPlaying.shift())
   prevSong.push(currentSongPlaying.shift())
-  console.log(currentSongPlaying)
-  console.log(currentSongURLPlaying)
-  // currentSongURLPlaying.length = 0
-  // currentSongPlaying.length = 0
+  labelPreviousSongs()
 }
 
 function transferNextToCurrent () {
-  console.log('transferNextToCurrent was triggered')
-  currentSongURLPlaying.push(nextSongURLArray[0])
-  currentSongPlaying.push(nextSongArray[0])
-  nextSongURLArray.shift()
-  nextSongArray.shift()
+  currentSongURLPlaying.push(nextSongURLArray.shift())
+  currentSongPlaying.push(nextSongArray.shift())
+  labelCurrentSong()
 }
 
 function ifNextSong() {
@@ -171,16 +146,14 @@ function ifNextSong() {
 }
 
 function getNextSong () {
-  console.log('getNextSong was triggered')
-  let neededString = currentSongPlaying[0]
-  let positionOfCurrentSong = songsMainArray.indexOf(neededString)
-
-  positionOfNextSong = positionOfCurrentSong + 1
-
+  let currentSongString = currentSongPlaying[0]
+  let positionOfCurrentSong = songsMainArray.indexOf(currentSongString)
+  let positionOfNextSong = positionOfCurrentSong + 1
   pushSongsToNext(songURLsMain[positionOfNextSong], songsMainArray[positionOfNextSong])
 }
 
 function displaySongList () {
+  console.log('displaySongList was triggered');
   let queuPosition = (songsMainArray.length - 1)
   let songListEl = document.getElementById('songsToPlay')
   let queuSongListItemEl = document.createElement('li')
@@ -188,31 +161,29 @@ function displaySongList () {
   songListEl.appendChild(queuSongListItemEl)
   queuSongListItemEl.setAttribute('id', queuPosition)
   queuSongListItemEl.appendChild(queuSongListItemContent)
-  // annotateAndUpdateSongList()
 }
 
-function annotateAndUpdateSongList () {
-  // console.log('annotateAndUpdateSongList was triggered');
-  // let positionOfCurrentSong = songsMainArray.indexOf(currentSongPlaying[0])
-  // let currentSongElement = document.getElementById(positionOfCurrentSong)
-  // currentSongElement.classList.add('current_song')
-  //
-  // if (currentSongElement.classList.contains('next_song')) {
-  //   currentSongElement.classList.remove('next_song')
-  // }
-  //
-  // if (nextSongArray.length === 1) {
-  //   let findNextSong = songsMainArray.indexOf(nextSongArray[0])
-  //   let nextSonginList = document.getElementById(findNextSong)
-  //   nextSonginList.classList.add('next_song')
-  // } else if (positionOfCurrentSong === (songsMainArray.length - 1)) {
-  //   currentSongElement.classList.add('last_song')
-  //
-  // }
+function labelCurrentSong() {
+  console.log('labelCurrentSong was triggered');
+  let positionOfCurrentSong = songsMainArray.indexOf(currentSongPlaying[0])
+  let currentSongElement = document.getElementById(positionOfCurrentSong)
+  currentSongElement.classList.add('current_song')
+
+  if (currentSongElement.classList.contains('next_song')) {
+    currentSongElement.classList.remove('next_song')
+  }
 }
 
-// function labelPreviousSongs () {
-//   let lastSongEl = document.querySelector('li.current_song')
-//   lastSongEl.classList.remove('current_song')
-//   lastSongEl.classList.add('already_played')
-// }
+function labelPreviousSongs () {
+  console.log('labelPreviousSongs was triggered');
+  let prevSongEls = document.querySelector('li.current_song')
+  prevSongEls.classList.remove('current_song')
+  prevSongEls.classList.add('already_played')
+}
+
+function labelNextSong () {
+  console.log('labelNextSong was triggered');
+  let positionOfNextSong = 1 + (songsMainArray.indexOf(currentSongPlaying[0]))
+  let nextSongElement = document.getElementById(positionOfNextSong)
+  nextSongElement.classList.add('next_song')
+}
