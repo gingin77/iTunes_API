@@ -33,8 +33,11 @@ function fetchGET () {
           let songResultHits = `
           <div class="item" url="${audio}" value='${artist}, "${songTitle}"'>
             <img src="${coverArt}" url="${audio}" value='${artist}, "${songTitle}"'/>
-            <h4 url="${audio}" value='${artist}, "${songTitle}"'>${songTitle}</h4>
-            <h3 url="${audio}" value='${artist}, "${songTitle}"'>${artist}</h3>
+            <div class="song_info_holder">
+              <h4 url="${audio}" value='${artist}, "${songTitle}"'>${songTitle}</h4>
+              <br>
+              <h3 url="${audio}" value='${artist}, "${songTitle}"'>${artist}</h3>
+            </div>
           </div>`
 
           markup += songResultHits
