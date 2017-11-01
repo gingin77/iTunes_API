@@ -35,6 +35,7 @@ body{
 
 h1{
   text-align: center;
+  font-size: 1.3em;
 }
 
 h2, span {
@@ -136,6 +137,17 @@ img{
 
 .already_played{
   color: #a7adb2;
+}
+
+
+@media screen and (min-width: 380px){
+  h1 {
+    font-size: 2em;
+  }
+
+  body{
+    background-color: red;
+  }
 }
 
 
