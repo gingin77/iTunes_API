@@ -34,16 +34,14 @@ function fetchGET () {
         for (let i = 0; i < data.results.length; i++) {
           let cover_art = abrv[i].artworkUrl100
           let artist = abrv[i].artistName
-          let album = abrv[i].collectionName
           let audio = abrv[i].previewUrl
-          let song_title = abrv[i].trackName
-          let genre = abrv[i].primaryGenreName
+          let songTitle = abrv[i].trackName
 
-          let song_result_hits = `
-          <div class="item" url="${audio}" value='${artist}, "${song_title}"'>
-            <img src="${cover_art}" url="${audio}" value='${artist}, "${song_title}"'/>
-            <h4 url="${audio}" value='${artist}, "${song_title}"'>${song_title}</h4>
-            <h3 url="${audio}" value='${artist}, "${song_title}"'>${artist}</h3>
+          let songResultHits = `
+          <div class="item" url="${audio}" value='${artist}, "${songTitle}"'>
+            <img src="${coverArt}" url="${audio}" value='${artist}, "${songTitle}"'/>
+            <h4 url="${audio}" value='${artist}, "${songTitle}"'>${songTitle}</h4>
+            <h3 url="${audio}" value='${artist}, "${songTitle}"'>${artist}</h3>
           </div>`
 
           markup += song_result_hits
@@ -67,20 +65,21 @@ function fetchGET () {
 // variables that allow for memory and control of song sequence
 let songURLsToPlay = []/* there is no in Q array because these 2 serve that purpose */
 let listOfPickedSongs = []
+
 let currentSongURLPlaying = []
 let currentSongPlaying = []
+
 let nextSongURLPlaying = []
 let nextSongPlaying = []
-
-let positionOfCurrentSong = ''
-let positionOfNextSong = ''
-let postionOfLastSongPicked = ''
-let songURL = ''
 
 let previousSongURLPlaying = []
 let previousSongPlaying = []
 
-//Add event listener for onSongEnd to the audioPlayerEl
+let songURL = ''
+
+let positionOfNextSong = ''
+let postionOfLastSongPicked = ''
+
 let audioPlayerEl = document.getElementById('song_player')
   // console.log(audioPlayerEl);
 audioPlayerEl.addEventListener('ended',onSongEnd, true)
@@ -242,22 +241,7 @@ function displaySongList(){
         // annotateAndUpdateSongList2()
   }
 
-function annotateAndUpdateSongList(){
-  let findCurrentSong = listOfPickedSongs.indexOf(currentSongPlaying[0])
-  console.log(findCurrentSong)
-  let currentSongPosInList = document.getElementById(findCurrentSong)
-  console.log(currentSongPosInList)
-  console.log(currentSongPosInList.length)
-  currentSongPosInList.classList.add("current_song")
-
-  if (currentSongPosInList.length = 1){
-    currentSongPosInList.classList.remove("next_song")
-    currentSongPosInList.classList.add("current_song")
-  } else {
-    currentSongPosInList.classList.add("current_song")
-  }
-
-  if (nextSongPlaying.length >= 1 ){
+  if (nextSongPlaying.length >= 1) {
     let findNextSong = listOfPickedSongs.indexOf(nextSongPlaying[0])
     console.log(findNextSong)
     let nextSonginList = document.getElementById(findNextSong)
