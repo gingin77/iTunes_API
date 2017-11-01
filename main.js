@@ -60,9 +60,6 @@ let currentSongURLPlaying = []
 let currentSongPlaying = []
 let nextSongURLArray = []
 let nextSongArray = []
-
-let songURL = ''
-
 let prevURL = []
 let prevSong = []
 
@@ -96,9 +93,9 @@ function playNowOrSave () {
 }
 
 function onSongEnd () {
-  if (nextSongArray.length === 0){
+  if (nextSongArray.length === 0) {
     audioPlayerEl.pause()
-    transferCurrentToPrev ()
+    transferCurrentToPrev()
   } else {
     transferCurrentToPrev()
     playSequence(nextSongURLArray[0])
@@ -114,13 +111,13 @@ function playSequence (songURL) {
   audioPlayerEl.play()
 }
 
-function pushSongsToCurrent (url, info){
+function pushSongsToCurrent (url, info) {
   currentSongURLPlaying.push(url)
   currentSongPlaying.push(info)
   labelCurrentSong()
 }
 
-function pushSongsToNext (url, info){
+function pushSongsToNext (url, info) {
   nextSongURLArray.push(url)
   nextSongArray.push(info)
   labelNextSong()
@@ -138,9 +135,9 @@ function transferNextToCurrent () {
   labelCurrentSong()
 }
 
-function ifNextSong() {
+function ifNextSong () {
   let positionOfCurrentSong = songsMainArray.indexOf(currentSongPlaying[0])
-  if (positionOfCurrentSong !== (songsMainArray.length - 1)){
+  if (positionOfCurrentSong !== (songsMainArray.length - 1)) {
     getNextSong()
   }
 }
@@ -153,7 +150,6 @@ function getNextSong () {
 }
 
 function displaySongList () {
-  console.log('displaySongList was triggered');
   let queuPosition = (songsMainArray.length - 1)
   let songListEl = document.getElementById('songsToPlay')
   let queuSongListItemEl = document.createElement('li')
@@ -163,8 +159,7 @@ function displaySongList () {
   queuSongListItemEl.appendChild(queuSongListItemContent)
 }
 
-function labelCurrentSong() {
-  console.log('labelCurrentSong was triggered');
+function labelCurrentSong () {
   let positionOfCurrentSong = songsMainArray.indexOf(currentSongPlaying[0])
   let currentSongElement = document.getElementById(positionOfCurrentSong)
   currentSongElement.classList.add('current_song')
@@ -175,14 +170,12 @@ function labelCurrentSong() {
 }
 
 function labelPreviousSongs () {
-  console.log('labelPreviousSongs was triggered');
   let prevSongEls = document.querySelector('li.current_song')
   prevSongEls.classList.remove('current_song')
   prevSongEls.classList.add('already_played')
 }
 
 function labelNextSong () {
-  console.log('labelNextSong was triggered');
   let positionOfNextSong = 1 + (songsMainArray.indexOf(currentSongPlaying[0]))
   let nextSongElement = document.getElementById(positionOfNextSong)
   nextSongElement.classList.add('next_song')
